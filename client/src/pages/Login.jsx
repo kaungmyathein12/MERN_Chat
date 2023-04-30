@@ -7,7 +7,7 @@ const formStyles = {
   btnElement: "bg-indigo-500 text-white px-3 py-2 mb-4",
 };
 
-const Register = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
     username: "",
@@ -21,7 +21,7 @@ const Register = () => {
       values.password !== "" &&
       values.email !== ""
     ) {
-      const { data } = await api.post("/auth/register", values);
+      const { data } = await api.post("/auth/login", values);
       if (data.status) {
         localStorage.setItem("user", JSON.stringify(data.user));
         navigate("/");
@@ -36,7 +36,7 @@ const Register = () => {
   return (
     <div className="h-screen grid place-items-center">
       <div className="flex flex-col w-3/12 text-center">
-        <h1 className="text-start mb-4 text-lg">Sign Up</h1>
+        <h1 className="text-start mb-4 text-lg">Login</h1>
         <input
           type="text"
           className={formStyles.inputElement}
@@ -62,12 +62,12 @@ const Register = () => {
           onChange={(e) => handleChange(e)}
         />
         <button className={formStyles.btnElement} onClick={handleSubmit}>
-          Create an account
+          Login
         </button>
-        <span className="text-sm">Already have an account?</span>
+        <span className="text-sm">Create an account</span>
       </div>
     </div>
   );
 };
 
-export default Register;
+export default Login;
