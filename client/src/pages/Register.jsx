@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 
 const formStyles = {
-  inputElement: "border outline-none px-3 py-2 mb-4",
+  inputElement: "bg-night outline-none px-3 py-2 mb-4",
   btnElement: "bg-indigo-500 text-white px-3 py-2 mb-4",
 };
 
@@ -33,6 +33,12 @@ const Register = () => {
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="h-screen grid place-items-center">
       <div className="flex flex-col w-3/12 text-center">

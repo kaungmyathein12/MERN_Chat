@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 
@@ -10,18 +10,14 @@ const formStyles = {
 const Login = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
-    username: "",
     email: "",
     password: "",
   });
 
   const handleSubmit = async () => {
-    if (
-      values.username !== "" &&
-      values.password !== "" &&
-      values.email !== ""
-    ) {
+    if (values.password !== "" && values.email !== "") {
       const { data } = await api.post("/auth/login", values);
+      console.log(data);
       if (data.status) {
         localStorage.setItem("user", JSON.stringify(data.user));
         navigate("/");
@@ -33,18 +29,16 @@ const Login = () => {
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="h-screen grid place-items-center">
       <div className="flex flex-col w-3/12 text-center">
         <h1 className="text-start mb-4 text-lg">Login</h1>
-        <input
-          type="text"
-          className={formStyles.inputElement}
-          placeholder="Enter your name"
-          name="username"
-          value={values.username}
-          onChange={(e) => handleChange(e)}
-        />
         <input
           type="email"
           className={formStyles.inputElement}
