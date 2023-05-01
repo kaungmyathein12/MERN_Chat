@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import ChatHeader from "./UI/ChatHeader";
-import { PaperPlaneTilt } from "@phosphor-icons/react";
 import useSWRMutation from "swr/mutation";
-import api from "../api";
 import { socket } from "../socket";
+import api from "../api";
+import ChatBody from "./UI/ChatBody";
+import ChatInput from "./UI/ChatInput";
+import ChatHeader from "./UI/ChatHeader";
+
 const ChatContainer = ({ currentChat, currentUser }) => {
   const [message, setMessage] = useState("");
   const [sentMessages, setSentMessages] = useState([]);
@@ -57,40 +59,8 @@ const ChatContainer = ({ currentChat, currentUser }) => {
   return (
     <div className="col-span-6 border-r border-night relative flex flex-col">
       <ChatHeader currentChat={currentChat} />
-      <div className="flex-1 bg-[#101010] overflow-scroll relative">
-        <div className="absolute overflow-scroll pb-20">
-          {sentMessages &&
-            sentMessages.length > 0 &&
-            sentMessages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex flex-row ${
-                  msg.fromSelf ? "justify-end" : "justify-start"
-                } items-center p-5`}
-              >
-                <div className="bg-[#333] px-4 py-3 rounded-md text-[15px] max-w-[50%]">
-                  {msg.message}
-                </div>
-              </div>
-            ))}
-        </div>
-      </div>
-      <div className="bg-[#101010] border-t border-night absolute bottom-0 w-full p-3 flex flex-row justify-between items-stretch gap-x-4">
-        <textarea
-          rows="1"
-          placeholder="Enter text something"
-          autoFocus
-          className="outline-none bg-[#101010] resize-none p-3 w-full mx-0 text-sm rounded-md"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        ></textarea>
-        <button
-          className="border border-night px-4 rounded-md bg-white text-black"
-          onClick={() => trigger()}
-        >
-          <PaperPlaneTilt size={18} weight="fill" />
-        </button>
-      </div>
+      <ChatBody messages={sentMessages} />
+      <ChatInput message={message} setMessage={setMessage} trigger={trigger} />
     </div>
   );
 };
