@@ -5,7 +5,7 @@ const ChatHeader = ({ currentChat }) => {
     <>
       {currentChat && (
         <nav className="border-b border-night px-5 py-3 flex flex-row justify-between items-center">
-          <div className="flex flex-row justify-start items-center space-x-3">
+          <div className="flex flex-row justify-start items-center gap-x-3">
             <Avatar size={42} name={currentChat.username} />
             <div>
               <h3 className="-mb-1 font-[600]">{currentChat.username}</h3>

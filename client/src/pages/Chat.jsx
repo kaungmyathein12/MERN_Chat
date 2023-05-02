@@ -40,21 +40,6 @@ const Chat = () => {
                 currentUser={currentUser}
               />
             )}
-            {currentChat && (
-              <div className="col-span-2 border-r border-night relative overflow-hidden overflow-y-scroll">
-                <div className="absolute inset-0 p-5">
-                  <h1 className="font-semibold text-sm mb-4">Notification</h1>
-                  <div className="bg-[#222] text-sm px-4 py-3">
-                    <p className="font-medium leading-relaxed">
-                      Kaung Myat Hein sent you a new message.
-                    </p>
-                    <div className="text-xs opacity-50 font-medium flex justify-end mt-2 cursor-pointer">
-                      <span>Remove</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}
