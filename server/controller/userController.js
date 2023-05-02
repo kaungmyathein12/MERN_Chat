@@ -19,12 +19,12 @@ export const register = async (req, res) => {
       password: hashedPassword,
     });
     user = _.pick(user, ["_id", "username", "email"]);
-    return res.json({
+    return res.status(201).json({
       status: true,
       user,
     });
   } catch (error) {
-    return res.json({
+    return res.status(400).json({
       error: error.message,
     });
   }
@@ -48,12 +48,12 @@ export const login = async (req, res) => {
       });
 
     user = _.pick(user, ["_id", "username", "email"]);
-    return res.json({
+    return res.status(201).json({
       status: true,
       user,
     });
   } catch (error) {
-    return res.json({
+    return res.status(400).json({
       error: error.message,
     });
   }

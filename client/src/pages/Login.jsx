@@ -1,13 +1,32 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Avatar from "boring-avatars";
+import useSWRMutation from "swr/mutation";
+
 import api from "../api";
 
 const formStyles = {
-  inputElement: "border outline-none px-3 py-2 mb-4",
-  btnElement: "bg-indigo-500 text-white px-3 py-2 mb-4",
+  inputElement:
+    "bg-transparent border-2 border-night outline-none px-3 py-4 text-sm mb-4",
+  btnElement:
+    "bg-white text-black text-sm font-bold px-3 py-4 mb-4 hover:bg-green-500 active:bg-green-600 transition-all",
 };
 
 const Login = () => {
+  // const [error, setError] = useState("");
+  const { trigger, error, isMutating } = useSWRMutation(
+    "/auth/login",
+    async (url) => {
+      const { data } = await api.post(url, values);
+      if (data.status) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        navigate("/");
+      } else {
+        throw new Error(data.message);
+      }
+    }
+  );
+
   const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
@@ -16,14 +35,7 @@ const Login = () => {
 
   const handleSubmit = async () => {
     if (values.password !== "" && values.email !== "") {
-      const { data } = await api.post("/auth/login", values);
-      console.log(data);
-      if (data.status) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/");
-      } else {
-        alert(data.message);
-      }
+      trigger();
     }
   };
   const handleChange = (event) => {
@@ -38,7 +50,27 @@ const Login = () => {
   return (
     <div className="h-screen grid place-items-center">
       <div className="flex flex-col w-3/12 text-center">
-        <h1 className="text-start mb-4 text-lg">Login</h1>
+        <div className="flex flex-row justify-start items-center mb-6 gap-x-4">
+          <div>
+            <Avatar
+              size={60}
+              name={"Get Connect"}
+              variant="beam"
+              colors={["#D94052", "#EE7E4C", "#EAD56C", "#94C5A5", "#898B75"]}
+            />
+          </div>
+          <div>
+            <h1 className="text-start text-xl font-semibold mb-1">
+              GetConnect
+            </h1>
+            <h1 className="text-start font-medium opacity-50">Login account</h1>
+          </div>
+        </div>
+        {error && (
+          <div className="py-4 mb-4 bg-red-600 font-semibold text-sm">
+            {error?.message}
+          </div>
+        )}
         <input
           type="email"
           className={formStyles.inputElement}
@@ -56,7 +88,7 @@ const Login = () => {
           onChange={(e) => handleChange(e)}
         />
         <button className={formStyles.btnElement} onClick={handleSubmit}>
-          Login
+          {isMutating ? "Loading" : "Login"}
         </button>
         <span className="text-sm">Create an account</span>
       </div>
