@@ -57,7 +57,7 @@ const ChatContainer = ({ currentChat, currentUser }) => {
     }
   }, [currentChat, getAllMessages]);
   return (
-    <div className="col-span-6 border-r border-night relative flex flex-col">
+    <div className="col-span-5 border-r border-night relative flex flex-col">
       <ChatHeader currentChat={currentChat} />
       <ChatBody messages={sentMessages} />
       <ChatInput message={message} setMessage={setMessage} trigger={trigger} />
