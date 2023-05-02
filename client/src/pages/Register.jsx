@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "boring-avatars";
 import useSWRMutation from "swr/mutation";
 
@@ -13,6 +13,13 @@ const formStyles = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
   const { trigger, error, isMutating } = useSWRMutation(
     "/auth/register",
     async (url) => {
@@ -21,17 +28,15 @@ const Register = () => {
         localStorage.setItem("user", JSON.stringify(data.user));
         navigate("/");
       } else {
+        console.log(data);
         throw new Error(data.message);
       }
     }
   );
 
-  const navigate = useNavigate();
-  const [values, setValues] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+  const handleChange = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.value });
+  };
 
   const handleSubmit = async () => {
     if (
@@ -42,9 +47,6 @@ const Register = () => {
       trigger();
     }
   };
-  const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
@@ -53,14 +55,14 @@ const Register = () => {
   }, []);
   return (
     <div className="h-screen grid place-items-center">
-      <div className="flex flex-col w-[380px] text-center">
+      <div className="flex flex-col w-3/12  text-center">
         <div className="flex flex-row justify-start items-center mb-6 gap-x-4">
           <div>
             <Avatar
               size={60}
               name={"Get Connect"}
-              variant="beam"
-              colors={["#D94052", "#EE7E4C", "#EAD56C", "#94C5A5", "#898B75"]}
+              variant="mabble"
+              colors={["#5E412F", "#FCEBB6", "#78C0A8", "#F07818", "#F0A830"]}
             />
           </div>
           <div>
@@ -107,7 +109,9 @@ const Register = () => {
         <button className={formStyles.btnElement} onClick={handleSubmit}>
           {isMutating ? "Loading" : "Register"}
         </button>
-        <span className="text-sm">Already have an account?</span>
+        <Link to={"/login"}>
+          <span className="text-sm underline">Already have an account?</span>
+        </Link>
       </div>
     </div>
   );

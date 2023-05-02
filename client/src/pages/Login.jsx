@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "boring-avatars";
 import useSWRMutation from "swr/mutation";
 
@@ -55,8 +55,8 @@ const Login = () => {
             <Avatar
               size={60}
               name={"Get Connect"}
-              variant="beam"
-              colors={["#D94052", "#EE7E4C", "#EAD56C", "#94C5A5", "#898B75"]}
+              variant="mabble"
+              colors={["#5E412F", "#FCEBB6", "#78C0A8", "#F07818", "#F0A830"]}
             />
           </div>
           <div>
@@ -90,7 +90,9 @@ const Login = () => {
         <button className={formStyles.btnElement} onClick={handleSubmit}>
           {isMutating ? "Loading" : "Login"}
         </button>
-        <span className="text-sm">Create an account</span>
+        <Link to={"/register"}>
+          <span className="text-sm underline">Create an account</span>
+        </Link>
       </div>
     </div>
   );

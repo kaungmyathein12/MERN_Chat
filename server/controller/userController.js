@@ -5,6 +5,11 @@ import User from "./../model/userModel.js";
 export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    if (!email.includes("@") || !email.includes("."))
+      return res.json({
+        status: false,
+        message: "Email must be a valid email address",
+      });
     const emailCheck = await User.findOne({ email });
     if (emailCheck)
       return res.json({
@@ -33,6 +38,12 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (!email.includes("@") || !email.includes("."))
+      return res.status(400).json({
+        status: false,
+        message: "Email must be a valid email address",
+      });
+
     let user = await User.findOne({ email });
     if (!user)
       return res.json({
