@@ -17,6 +17,15 @@ const userSchema = new mongoose.Schema({
     min: 4,
     max: 50,
   },
+
+  // fri request -> requestfriendlist
+  // accepted -> requestfriendlist <-> friendlist
+  friendList: {
+    type: Array,
+  },
+  requestFriendList: {
+    type: Array,
+  },
 });
 
 const User = mongoose.model("Users", userSchema);

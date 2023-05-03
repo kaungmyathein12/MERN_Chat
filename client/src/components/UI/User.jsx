@@ -11,7 +11,11 @@ const User = ({ user, currentSelected, changeCurrentChat }) => {
           onClick={() => changeCurrentChat(user._id, user)}
         >
           <div>
-            <Avatar size={40} name={user.username} />
+            <Avatar
+              size={40}
+              name={user.username}
+              colors={["#5E412F", "#FCEBB6", "#78C0A8", "#F07818", "#F0A830"]}
+            />
           </div>
           <div>
             <h3 className=" text-sm font-[600]">{user.username}</h3>
