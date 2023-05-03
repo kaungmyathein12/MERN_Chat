@@ -18,25 +18,29 @@ const ChatContainer = ({ currentChat, currentUser }) => {
       ...msg,
       sender: msg.fromSelf ? currentUser.username : currentChat.username,
     }));
+
     setSentMessages(messages);
   }, [currentChat, currentUser]);
 
   const { trigger } = useSWRMutation("/messages/addmsg", async (url) => {
-    await api.post(url, {
+    const { data } = await api.post(url, {
       from: currentUser._id,
       to: currentChat._id,
       message,
     });
+
     socket.emit("sendMessage", {
       to: currentChat._id,
-      message,
+      message: data.message.message,
+      updatedAt: data.message.updatedAt,
     });
 
     const messages = [...sentMessages];
     messages.push({
       fromSelf: true,
-      message,
       sender: currentUser.username,
+      message: data.message.message,
+      updatedAt: data.message.updatedAt,
     });
 
     setSentMessages(messages);
@@ -50,13 +54,14 @@ const ChatContainer = ({ currentChat, currentUser }) => {
           ...prev,
           {
             fromSelf: false,
-            message: data,
             sender: currentChat.username,
+            message: data.message,
+            updatedAt: data.updatedAt,
           },
         ]);
       });
     }
-  }, []);
+  }, [currentChat]);
 
   useEffect(() => {
     if (currentUser) {
@@ -71,7 +76,7 @@ const ChatContainer = ({ currentChat, currentUser }) => {
   }, [currentChat, getAllMessages]);
 
   return (
-    <div className="col-span-7 relative flex flex-col">
+    <div className="col-span-7 bg-[#151618] relative flex flex-col">
       <ChatHeader currentChat={currentChat} />
       <ChatBody messages={sentMessages} />
       <ChatInput message={message} setMessage={setMessage} trigger={trigger} />

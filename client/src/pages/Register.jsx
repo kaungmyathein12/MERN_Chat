@@ -25,7 +25,8 @@ const Register = () => {
     async (url) => {
       const { data } = await api.post(url, values);
       if (data.status) {
-        localStorage.setItem("user", JSON.stringify(data.user));
+        console.log(data);
+        localStorage.setItem("token", data.token);
         navigate("/");
       } else {
         console.log(data);

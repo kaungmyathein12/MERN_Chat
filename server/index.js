@@ -37,8 +37,8 @@ io.on("connection", (socket) => {
     users[userId] = socket.id;
   });
 
-  socket.on("sendMessage", ({ to, message }) => {
+  socket.on("sendMessage", ({ to, message, updatedAt }) => {
     const sendUser = users[to];
-    io.to(sendUser).emit("received", message);
+    io.to(sendUser).emit("received", { message, updatedAt });
   });
 });

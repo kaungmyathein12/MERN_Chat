@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import _ from "lodash";
 import User from "./../model/userModel.js";
+import { generateToken } from "../utils/token.js";
 
 export const register = async (req, res) => {
   try {
@@ -23,10 +24,11 @@ export const register = async (req, res) => {
       email,
       password: hashedPassword,
     });
-    user = _.pick(user, ["_id", "username", "email"]);
+    user = _.pick(user, ["_id"]);
+    const token = generateToken(user);
     return res.status(201).json({
       status: true,
-      user,
+      token,
     });
   } catch (error) {
     return res.status(400).json({

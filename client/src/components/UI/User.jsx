@@ -5,7 +5,7 @@ const User = ({ user, currentSelected, changeCurrentChat }) => {
     <>
       {user && (
         <div
-          className={`flex flex-row justify-start items-center gap-x-3 px-4 py-[9px] mx-2 mb-2 rounded-md cursor-pointer overflow-hidden ${
+          className={`flex flex-row justify-start items-center gap-x-3 px-4 py-[9px] mx-4 mb-2 rounded-md cursor-pointer overflow-hidden ${
             currentSelected === user._id ? "bg-[#222]" : ""
           }`}
           onClick={() => changeCurrentChat(user._id, user)}

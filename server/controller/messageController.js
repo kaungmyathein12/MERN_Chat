@@ -7,7 +7,14 @@ export const addMessage = async (req, res) => {
       users: [from, to],
       sender: from,
     });
-    if (data) return res.json("Message added successfully");
+    if (data)
+      return res.json({
+        status: 200,
+        message: {
+          message: data.message.text,
+          updatedAt: data.updatedAt,
+        },
+      });
     return res.json("Message added failed");
   } catch (error) {
     return res.json({
@@ -28,6 +35,7 @@ export const getAllMessage = async (req, res) => {
     messages = messages.map((msg) => ({
       fromSelf: msg.sender.toString() === from,
       message: msg.message.text,
+      updatedAt: msg.updatedAt,
     }));
     return res.json({
       status: true,
