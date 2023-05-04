@@ -13,8 +13,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", userRoutes);
-app.use("/api/messages", messageRoutes);
+app.use("/api/v1/auth", userRoutes);
+app.use("/api/v1/messages", messageRoutes);
 
 connect(process.env.MONGO_URL)
   .then(() => console.log("DB connected successfully"))

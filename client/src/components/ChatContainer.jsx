@@ -1,30 +1,33 @@
 import { useCallback, useEffect, useState } from "react";
 import useSWRMutation from "swr/mutation";
 import { socket } from "../socket";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "./../states";
 import api from "../api";
 import ChatBody from "./UI/ChatBody";
 import ChatInput from "./UI/ChatInput";
 import ChatHeader from "./UI/ChatHeader";
 
-const ChatContainer = ({ currentChat, currentUser }) => {
+const ChatContainer = ({ currentChat }) => {
+  const user = useRecoilValue(userAtom);
   const [message, setMessage] = useState("");
   const [sentMessages, setSentMessages] = useState([]);
   const getAllMessages = useCallback(async () => {
     const { data } = await api.post("/messages/getmsg", {
-      from: currentUser._id,
+      from: user._id,
       to: currentChat._id,
     });
     const messages = data.messages.map((msg) => ({
       ...msg,
-      sender: msg.fromSelf ? currentUser.username : currentChat.username,
+      sender: msg.fromSelf ? user.username : currentChat.username,
     }));
 
     setSentMessages(messages);
-  }, [currentChat, currentUser]);
+  }, [currentChat, user]);
 
   const { trigger } = useSWRMutation("/messages/addmsg", async (url) => {
     const { data } = await api.post(url, {
-      from: currentUser._id,
+      from: user._id,
       to: currentChat._id,
       message,
     });
@@ -38,7 +41,7 @@ const ChatContainer = ({ currentChat, currentUser }) => {
     const messages = [...sentMessages];
     messages.push({
       fromSelf: true,
-      sender: currentUser.username,
+      sender: user.username,
       message: data.message.message,
       updatedAt: data.message.updatedAt,
     });
@@ -64,10 +67,10 @@ const ChatContainer = ({ currentChat, currentUser }) => {
   }, [currentChat]);
 
   useEffect(() => {
-    if (currentUser) {
-      socket.emit("connected", currentUser._id);
+    if (user) {
+      socket.emit("connected", user._id);
     }
-  }, [currentUser]);
+  }, [user]);
 
   useEffect(() => {
     if (currentChat._id) {
