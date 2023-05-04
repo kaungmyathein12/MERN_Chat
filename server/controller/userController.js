@@ -60,10 +60,11 @@ export const login = async (req, res) => {
         message: "Incorrect email or password",
       });
 
-    user = _.pick(user, ["_id", "username", "email"]);
+    user = _.pick(user, ["_id"]);
+    const token = generateToken(user);
     return res.status(201).json({
       status: true,
-      user,
+      token,
     });
   } catch (error) {
     return res.status(400).json({
@@ -88,4 +89,9 @@ export const getAllUsers = async (req, res) => {
       error: error.message,
     });
   }
+};
+
+export const getCurrentUser = async (req, res) => {
+  const user = req.user;
+  console.log(user);
 };

@@ -19,7 +19,7 @@ const Login = () => {
     async (url) => {
       const { data } = await api.post(url, values);
       if (data.status) {
-        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", JSON.stringify(data.token));
         navigate("/");
       } else {
         throw new Error(data.message);

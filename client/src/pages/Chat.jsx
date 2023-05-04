@@ -1,21 +1,30 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useSWRMutation from "swr/mutation";
+
 import Navbar from "../components/Navbar";
 import Contacts from "../components/Contacts";
 import ChatContainer from "../components/ChatContainer";
+import api from "../api";
 
 const Chat = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(undefined);
   const [currentChat, setCurrentChat] = useState();
 
+  const { trigger, error, isMutating } = useSWRMutation(
+    "/auth/me",
+    async (url) => {
+      const user = await api.get(url);
+    }
+  );
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("user")) {
-      navigate("/register");
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
     } else {
       setCurrentUser(JSON.parse(localStorage.getItem("user")));
     }
