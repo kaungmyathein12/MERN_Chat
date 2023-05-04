@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "boring-avatars";
 import useSWRMutation from "swr/mutation";
-
 import api from "../api";
 
 const formStyles = {
@@ -13,13 +12,12 @@ const formStyles = {
 };
 
 const Login = () => {
-  // const [error, setError] = useState("");
   const { trigger, error, isMutating } = useSWRMutation(
     "/auth/login",
     async (url) => {
       const { data } = await api.post(url, values);
       if (data.status) {
-        localStorage.setItem("token", JSON.stringify(data.token));
+        localStorage.setItem("token", data.token);
         navigate("/");
       } else {
         throw new Error(data.message);

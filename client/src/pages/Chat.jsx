@@ -1,21 +1,32 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSWRMutation from "swr/mutation";
-
 import Navbar from "../components/Navbar";
 import Contacts from "../components/Contacts";
 import ChatContainer from "../components/ChatContainer";
-import api from "../api";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { tokenAtom, userAtom } from "./../states";
 
 const Chat = () => {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(undefined);
+
+  const [token, setToken] = useRecoilState(tokenAtom);
+  const [user, setUser] = useRecoilState(userAtom);
   const [currentChat, setCurrentChat] = useState();
 
-  const { trigger, error, isMutating } = useSWRMutation(
-    "/auth/me",
+  const { trigger } = useSWRMutation(
+    "http://localhost:3000/api/auth/me",
     async (url) => {
-      const user = await api.get(url);
+      const { data } = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      if (data.status) {
+        setUser(data.user);
+      }
     }
   );
   const handleChatChange = (chat) => {
@@ -26,28 +37,31 @@ const Chat = () => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
     } else {
-      setCurrentUser(JSON.parse(localStorage.getItem("user")));
+      setToken(localStorage.getItem("token"));
     }
   }, []);
 
+  useEffect(() => {
+    if (token !== "") {
+      trigger();
+    }
+  }, [token, trigger]);
+
   return (
     <>
-      {currentUser !== undefined && (
+      {user !== undefined && (
         <div className="flex flex-col h-screen">
-          <Navbar currentUser={currentUser} />
+          <Navbar currentUser={user} />
           <div className="grid grid-cols-9 flex-1">
             {/* <div className=" col-span-1 border-r border-night"></div> */}
-            {currentUser && (
+            {user && (
               <Contacts
-                currentUserId={currentUser._id}
+                currentUserId={user._id}
                 chatChange={handleChatChange}
               />
             )}
             {currentChat && (
-              <ChatContainer
-                currentChat={currentChat}
-                currentUser={currentUser}
-              />
+              <ChatContainer currentChat={currentChat} user={user} />
             )}
           </div>
         </div>
