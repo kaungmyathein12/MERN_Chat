@@ -12,7 +12,8 @@ const ChatContainer = ({ currentChat }) => {
   const user = useRecoilValue(userAtom);
   const [message, setMessage] = useState("");
   const [sentMessages, setSentMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState([]);
+  const [newMessage, setNewMessage] = useState(undefined);
+
   const getAllMessages = useCallback(async () => {
     const { data } = await api.post("/messages/getmsg", {
       from: user._id,
@@ -46,15 +47,13 @@ const ChatContainer = ({ currentChat }) => {
       message: data.message.message,
       updatedAt: data.message.updatedAt,
     });
-    if (newMessage.length < 1) {
-      setNewMessage([
-        {
-          fromSelf: true,
-          sender: user.username,
-          message: data.message.message,
-          updatedAt: data.message.updatedAt,
-        },
-      ]);
+    if (newMessage === undefined) {
+      setNewMessage({
+        fromSelf: true,
+        sender: user.username,
+        message: data.message.message,
+        updatedAt: data.message.updatedAt,
+      });
     }
 
     setSentMessages(messages);
@@ -73,15 +72,13 @@ const ChatContainer = ({ currentChat }) => {
             updatedAt: data.updatedAt,
           },
         ]);
-        if (newMessage.length < 1) {
-          setNewMessage([
-            {
-              fromSelf: false,
-              sender: currentChat.username,
-              message: data.message,
-              updatedAt: data.updatedAt,
-            },
-          ]);
+        if (newMessage === undefined) {
+          setNewMessage({
+            fromSelf: false,
+            sender: currentChat.username,
+            message: data.message,
+            updatedAt: data.updatedAt,
+          });
         }
       });
     }
