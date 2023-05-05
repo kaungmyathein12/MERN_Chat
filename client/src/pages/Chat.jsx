@@ -16,14 +16,21 @@ const Chat = () => {
   const [currentChat, setCurrentChat] = useState();
 
   const { trigger } = useSWRMutation("/auth/me", async (url) => {
-    const { data } = await api.get(url, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-    if (data.status) {
-      setUser(data.user);
+    try {
+      const { data } = await api.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      if (data.status) {
+        setUser(data.user);
+      } else {
+        alert("Request time out. Login again");
+        navigate("/login");
+      }
+    } catch (error) {
+      navigate("/login");
     }
   });
   const handleChatChange = (chat) => {

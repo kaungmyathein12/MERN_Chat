@@ -92,17 +92,24 @@ export const getAllUsers = async (req, res) => {
 };
 
 export const getCurrentUser = async (req, res) => {
-  const { _id: id } = req.user;
-  let user = await User.findById(id);
-  user = _.pick(user, [
-    "_id",
-    "username",
-    "email",
-    "friendList",
-    "requestFriendList",
-  ]);
-  res.status(200).json({
-    status: true,
-    user,
-  });
+  try {
+    const { _id: id } = req.user;
+    let user = await User.findById(id);
+    user = _.pick(user, [
+      "_id",
+      "username",
+      "email",
+      "friendList",
+      "requestFriendList",
+    ]);
+    res.status(200).json({
+      status: true,
+      user,
+    });
+  } catch (error) {
+    return res.json({
+      status: false,
+      error: error.message,
+    });
+  }
 };

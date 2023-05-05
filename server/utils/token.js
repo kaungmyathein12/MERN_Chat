@@ -17,6 +17,6 @@ export const vertifyToken = (req, res, next) => {
     req.user = vertified;
     next();
   } catch (error) {
-    return res.status(400).send("Invalid token.");
+    return res.status(401).send("Invalid token.");
   }
 };
