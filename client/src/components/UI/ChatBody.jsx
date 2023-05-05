@@ -2,8 +2,9 @@ import Avatar from "boring-avatars";
 import { useEffect, useRef, useState } from "react";
 import moment from "moment";
 
-const ChatBody = (messages) => {
+const ChatBody = (messages, newMessage) => {
   const [currentMessages, setCurrentMessages] = useState([]);
+
   const lastMessageRef = useRef(null);
 
   useEffect(() => {
@@ -17,13 +18,13 @@ const ChatBody = (messages) => {
   }, [currentMessages]);
 
   return (
-    <div className="flex-1 overflow-scroll scrollbar-hide relative">
-      <div className="absolute left-0 right-0 bottom-0 pb-24 flex flex-col justify-end">
+    <div className="flex-1 h-full relative overflow-hidden overflow-y-scroll">
+      <div className="absolute inset-0 h-auto">
         {currentMessages &&
           currentMessages.length > 0 &&
           currentMessages.map((msg, index) => {
             return (
-              <div key={index} className="px-5 flex flex-row mt-4 mb-2 gap-x-4">
+              <div key={index} className="px-5 flex flex-row mt-4 mb-6 gap-x-4">
                 <div className="w-10 h-10 shrink-0">
                   <Avatar
                     name={msg.sender}
@@ -51,12 +52,15 @@ const ChatBody = (messages) => {
               </div>
             );
           })}
-        <div className="text-center text-xs my-4">
-          <span className="border px-4 py-1 rounded-full border-night">
-            Today Messages
-          </span>
-        </div>
+        {newMessage.length > 0 && (
+          <div className="text-center text-xs my-4">
+            <span className="border px-4 py-1 rounded-full border-night">
+              Today Messages
+            </span>
+          </div>
+        )}
         <div ref={lastMessageRef} />
+        <div className="h-16"></div>
       </div>
     </div>
   );

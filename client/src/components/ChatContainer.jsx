@@ -12,6 +12,7 @@ const ChatContainer = ({ currentChat }) => {
   const user = useRecoilValue(userAtom);
   const [message, setMessage] = useState("");
   const [sentMessages, setSentMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState([]);
   const getAllMessages = useCallback(async () => {
     const { data } = await api.post("/messages/getmsg", {
       from: user._id,
@@ -45,6 +46,16 @@ const ChatContainer = ({ currentChat }) => {
       message: data.message.message,
       updatedAt: data.message.updatedAt,
     });
+    if (newMessage.length < 1) {
+      setNewMessage([
+        {
+          fromSelf: true,
+          sender: user.username,
+          message: data.message.message,
+          updatedAt: data.message.updatedAt,
+        },
+      ]);
+    }
 
     setSentMessages(messages);
     setMessage("");
@@ -62,6 +73,16 @@ const ChatContainer = ({ currentChat }) => {
             updatedAt: data.updatedAt,
           },
         ]);
+        if (newMessage.length < 1) {
+          setNewMessage([
+            {
+              fromSelf: false,
+              sender: currentChat.username,
+              message: data.message,
+              updatedAt: data.updatedAt,
+            },
+          ]);
+        }
       });
     }
   }, [currentChat]);
@@ -81,7 +102,7 @@ const ChatContainer = ({ currentChat }) => {
   return (
     <div className="col-span-7 bg-[#151618] relative flex flex-col">
       <ChatHeader currentChat={currentChat} />
-      <ChatBody messages={sentMessages} />
+      <ChatBody messages={sentMessages} newMessage={newMessage} />
       <ChatInput message={message} setMessage={setMessage} trigger={trigger} />
     </div>
   );
