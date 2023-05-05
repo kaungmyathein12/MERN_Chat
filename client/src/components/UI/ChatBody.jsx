@@ -51,6 +51,11 @@ const ChatBody = (messages) => {
               </div>
             );
           })}
+        <div className="text-center text-xs my-4">
+          <span className="border px-4 py-1 rounded-full border-night">
+            Today Messages
+          </span>
+        </div>
         <div ref={lastMessageRef} />
       </div>
     </div>
