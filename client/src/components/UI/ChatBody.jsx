@@ -31,13 +31,15 @@ const ChatBody = ({ messages, newMessage }) => {
                 {newMessage &&
                   Object.keys(newMessage).length > 0 &&
                   newMessage.updatedAt === msg.updatedAt && (
-                    <div className="text-center text-xs my-4">
-                      <span className="border px-4 py-1 rounded-full border-night">
-                        Today Messages
+                    <div className="text-center flex flex-row justify-between items-center my-2">
+                      <span className="h-[1px] bg-night grow"></span>
+                      <span className="border px-4 py-1 rounded-full border-night text-xs">
+                        New Messages
                       </span>
+                      <span className="h-[1px] bg-night grow"></span>
                     </div>
                   )}
-                <div className="px-5 flex flex-row mt-4 mb-6 gap-x-4">
+                <div className="px-5 flex flex-row py-4 gap-x-4 hover:bg-[#222]">
                   <div className="w-10 h-10 shrink-0">
                     <Avatar
                       name={msg.sender}
