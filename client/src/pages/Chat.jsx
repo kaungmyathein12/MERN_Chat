@@ -56,7 +56,7 @@ const Chat = () => {
       {user !== undefined && (
         <div className="flex flex-col h-screen">
           <Navbar currentUser={user} />
-          <div className="grid grid-cols-9 flex-1">
+          <div className="flex flex-row flex-1">
             {user && (
               <Contacts
                 currentUserId={user._id}

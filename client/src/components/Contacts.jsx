@@ -23,7 +23,7 @@ const Contacts = ({ currentUserId, chatChange }) => {
   }, [currentUserId]);
 
   return (
-    <div className="py-4 border-r  border-night col-span-2 flex flex-col">
+    <div className="py-4 border-r border-night w-[280px] flex flex-col">
       <h4 className="mb-4 text-sm font-semibold px-5">Direct Message</h4>
       <input
         type="text"
