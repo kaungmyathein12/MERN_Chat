@@ -101,10 +101,15 @@ export const getCurrentUser = async (req, res) => {
       "email",
       "friendList",
       "requestFriendList",
+      "image",
     ]);
     res.status(200).json({
       status: true,
-      user,
+      user: {
+        ...user,
+        image:
+          "https://i.pinimg.com/originals/2c/9c/20/2c9c20954029da1dec1020493d9b1347.jpg",
+      },
     });
   } catch (error) {
     return res.json({

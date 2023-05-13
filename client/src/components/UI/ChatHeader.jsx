@@ -4,10 +4,10 @@ const ChatHeader = ({ currentChat }) => {
   return (
     <>
       {currentChat && (
-        <nav className="border-b border-night px-5 py-3 flex flex-row justify-between items-center">
+        <nav className="border-b border-night px-5 py-2 flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center gap-x-3">
             <Avatar
-              size={42}
+              size={35}
               name={currentChat.username}
               colors={["#5E412F", "#FCEBB6", "#78C0A8", "#F07818", "#F0A830"]}
             />

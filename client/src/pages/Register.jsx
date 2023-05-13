@@ -4,6 +4,7 @@ import Avatar from "boring-avatars";
 import useSWRMutation from "swr/mutation";
 
 import api from "../api";
+import AuthPage from "../components/Layouts/AuthPage";
 
 const formStyles = {
   inputElement:
@@ -50,12 +51,12 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
+    if (localStorage.getItem("token")) {
       navigate("/");
     }
   }, []);
   return (
-    <div className="h-screen grid place-items-center">
+    <AuthPage>
       <div className="flex flex-col w-3/12  text-center">
         <div className="flex flex-row justify-start items-center mb-6 gap-x-4">
           <div>
@@ -114,7 +115,7 @@ const Register = () => {
           <span className="text-sm underline">Already have an account?</span>
         </Link>
       </div>
-    </div>
+    </AuthPage>
   );
 };
 

@@ -1,10 +1,14 @@
 import Avatar from "boring-avatars";
 import { useEffect, useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
 import moment from "moment";
+import { userAtom } from "../../states";
 
 const ChatBody = ({ messages, newMessage }) => {
+  const user = useRecoilValue(userAtom);
   const [currentMessages, setCurrentMessages] = useState([]);
   const lastMessageRef = useRef(null);
+  console.log(user);
 
   useEffect(() => {
     setCurrentMessages(messages);
@@ -22,36 +26,32 @@ const ChatBody = ({ messages, newMessage }) => {
 
   return (
     <div className="flex-1 h-full relative overflow-hidden overflow-y-scroll">
-      <div className="absolute inset-0 h-auto">
+      <div className="absolute inset-0 h-auto pt-4">
         {currentMessages &&
           currentMessages.length > 0 &&
           currentMessages.map((msg, index) => {
             return (
               <div key={index}>
-                {newMessage &&
-                  Object.keys(newMessage).length > 0 &&
-                  newMessage.updatedAt === msg.updatedAt && (
-                    <div className="text-center flex flex-row justify-between items-center my-2">
-                      <span className="h-[1px] bg-night grow"></span>
-                      <span className="border px-4 py-1 rounded-full border-night text-xs">
-                        New Messages
-                      </span>
-                      <span className="h-[1px] bg-night grow"></span>
-                    </div>
-                  )}
-                <div className="px-5 flex flex-row py-4 gap-x-4 hover:bg-[#222]">
+                <div className="px-5 flex flex-row py-2 gap-x-4 hover:bg-[#222]">
                   <div className="w-10 h-10 shrink-0">
-                    <Avatar
-                      name={msg.sender}
-                      variant="marble"
-                      colors={[
-                        "#5E412F",
-                        "#FCEBB6",
-                        "#78C0A8",
-                        "#F07818",
-                        "#F0A830",
-                      ]}
-                    />
+                    {msg.sender !== user.username ? (
+                      <Avatar
+                        name={msg.sender}
+                        variant="marble"
+                        colors={[
+                          "#5E412F",
+                          "#FCEBB6",
+                          "#78C0A8",
+                          "#F07818",
+                          "#F0A830",
+                        ]}
+                      />
+                    ) : (
+                      <img
+                        src={user.image}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </div>
                   <div>
                     <div className="flex flex-row items-end gap-x-2">

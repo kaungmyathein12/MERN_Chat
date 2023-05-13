@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Avatar from "boring-avatars";
 import useSWRMutation from "swr/mutation";
 import api from "../api";
+import AuthPage from "../components/Layouts/AuthPage";
 
-const formStyles = {
+export const formStyles = {
   inputElement:
     "bg-transparent border-2 border-night outline-none px-3 py-4 text-sm mb-4",
   btnElement:
@@ -41,12 +42,12 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
+    if (localStorage.getItem("token")) {
       navigate("/");
     }
   }, []);
   return (
-    <div className="h-screen grid place-items-center">
+    <AuthPage>
       <div className="flex flex-col w-3/12 text-center">
         <div className="flex flex-row justify-start items-center mb-6 gap-x-4">
           <div>
@@ -92,7 +93,7 @@ const Login = () => {
           <span className="text-sm underline">Create an account</span>
         </Link>
       </div>
-    </div>
+    </AuthPage>
   );
 };
 

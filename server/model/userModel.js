@@ -17,7 +17,9 @@ const userSchema = new mongoose.Schema({
     min: 4,
     max: 50,
   },
-
+  image: {
+    type: String,
+  },
   // fri request -> requestfriendlist
   // accepted -> requestfriendlist <-> friendlist
   friendList: {
