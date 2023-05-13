@@ -9,9 +9,12 @@ const ChatHeader = ({ currentChat }) => {
               name={currentChat.username}
               colors={["#5E412F", "#FCEBB6", "#78C0A8", "#F07818", "#F0A830"]}
             /> */}
-            <div>
-              <img src={currentChat.image} className="w-12 h-12 object-cover" />
-            </div>
+
+            <img
+              src={currentChat.image}
+              className="w-10 h-10 rounded object-cover"
+            />
+
             <div>
               <h3 className="-mb-1 font-[600]">{currentChat.username}</h3>
               <span className="text-xs font-medium opacity-50">

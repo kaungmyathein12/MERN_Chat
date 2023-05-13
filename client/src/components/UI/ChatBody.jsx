@@ -45,7 +45,7 @@ const ChatBody = ({ currentChat, messages }) => {
                         {moment(msg.updatedAt).format("LT")}
                       </span>
                     </div>
-                    <div className="font-medium rounded-md text-[#999] text-sm leading-relaxed">
+                    <div className="font-[500] rounded-md text-[#999] text-sm leading-[1.6]">
                       {msg.message}
                     </div>
                   </div>

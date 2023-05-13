@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSWRMutation from "swr/mutation";
 import Navbar from "../components/Navbar";
-import Contacts from "../components/Contacts";
+import SideBar from "../components/SideBar";
 import ChatContainer from "../components/ChatContainer";
 import { useRecoilState } from "recoil";
 import { tokenAtom, userAtom } from "./../states";
@@ -10,10 +10,11 @@ import api from "../api";
 
 const Chat = () => {
   const navigate = useNavigate();
-
   const [token, setToken] = useRecoilState(tokenAtom);
   const [user, setUser] = useRecoilState(userAtom);
   const [currentChat, setCurrentChat] = useState();
+  const [currentSelected, setCurrentSelected] = useState();
+
   const { trigger } = useSWRMutation("/auth/me", async (url) => {
     try {
       const { data } = await api.get(url, {
@@ -32,6 +33,7 @@ const Chat = () => {
       navigate("/login");
     }
   });
+
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };
@@ -57,18 +59,19 @@ const Chat = () => {
           <Navbar currentUser={user} />
           <div className="flex flex-row flex-1">
             {user && (
-              <Contacts
+              <SideBar
                 currentUserId={user._id}
                 chatChange={handleChatChange}
+                currentSelected={currentSelected}
+                setCurrentSelected={setCurrentSelected}
               />
             )}
-            {currentChat && (
-              <ChatContainer currentChat={currentChat} user={user} />
-            )}
+            {currentSelected !== "Home" &&
+              currentSelected !== "See all users" &&
+              currentChat && (
+                <ChatContainer currentChat={currentChat} user={user} />
+              )}
             <div className="w-[320px] px-5 py-5 mr-0 ml-auto border-l border-night">
-              {/* <div className="mb-5 flex justify-end">
-                <X size={26} />
-              </div> */}
               <div className="h-[260px]">
                 {user.image && (
                   <img
