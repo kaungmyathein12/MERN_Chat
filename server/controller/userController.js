@@ -105,11 +105,7 @@ export const getCurrentUser = async (req, res) => {
     ]);
     res.status(200).json({
       status: true,
-      user: {
-        ...user,
-        image:
-          "https://i.pinimg.com/originals/2c/9c/20/2c9c20954029da1dec1020493d9b1347.jpg",
-      },
+      user,
     });
   } catch (error) {
     return res.json({
@@ -117,4 +113,28 @@ export const getCurrentUser = async (req, res) => {
       error: error.message,
     });
   }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { _id: id } = req.user;
+    let user = await User.findById(id);
+    if (!user)
+      return res.status(404).json({ status: false, message: "User not found" });
+
+    user = await User.findByIdAndUpdate(id, { image: req.body.image });
+    user = _.pick(user, [
+      "_id",
+      "username",
+      "email",
+      "friendList",
+      "requestFriendList",
+      "image",
+    ]);
+
+    res.status(200).json({
+      status: true,
+      user,
+    });
+  } catch (error) {}
 };
