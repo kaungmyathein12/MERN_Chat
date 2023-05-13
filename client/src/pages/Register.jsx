@@ -5,6 +5,8 @@ import useSWRMutation from "swr/mutation";
 
 import api from "../api";
 import AuthPage from "../components/Layouts/AuthPage";
+import { useRecoilState } from "recoil";
+import { tokenAtom } from "../states";
 
 const formStyles = {
   inputElement:
@@ -15,6 +17,8 @@ const formStyles = {
 
 const Register = () => {
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
+  const [token, setToken] = useRecoilState(tokenAtom);
   const [values, setValues] = useState({
     username: "",
     email: "",
@@ -26,11 +30,10 @@ const Register = () => {
     async (url) => {
       const { data } = await api.post(url, values);
       if (data.status) {
-        console.log(data);
         localStorage.setItem("token", data.token);
-        navigate("/");
+        setToken(data.token);
+        navigate("/profile");
       } else {
-        console.log(data);
         throw new Error(data.message);
       }
     }

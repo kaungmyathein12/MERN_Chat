@@ -2,12 +2,38 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthPage from "../components/Layouts/AuthPage";
 import { formStyles } from "./Login";
+import useSWRMutation from "swr/mutation";
+import { useRecoilValue } from "recoil";
+import { tokenAtom } from "../states";
+import axios from "axios";
 
 const Profile = () => {
+  const token = useRecoilValue(tokenAtom);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
-  const [imageUrl, setImageUrl] = useState(
-    "https://scontent.frgn9-1.fna.fbcdn.net/v/t1.6435-9/117894548_188257752691900_7569134315138272792_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=174925&_nc_ohc=bqBTkSTiKWQAX-jOhPJ&_nc_ht=scontent.frgn9-1.fna&oh=00_AfDHq29y5JbLmRx5U5rV8Pwt3dVbzS-7nrolbWw8d5TNdg&oe=6486A011"
+  const [imageUrl, setImageUrl] = useState("");
+
+  const { trigger, isMutating } = useSWRMutation(
+    "auth/profile",
+    async (url) => {
+      if (token) {
+        const { data } = await axios.post(
+          `http://localhost:3000/api/v1/${url}`,
+          {
+            image: imageUrl,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (data.status) {
+          navigate("/");
+        }
+      }
+    }
   );
 
   useEffect(() => {
@@ -46,8 +72,8 @@ const Profile = () => {
             />
           </div>
         )}
-        <button className={`${formStyles.btnElement} w-full`}>
-          Upload Photo
+        <button className={`${formStyles.btnElement} w-full`} onClick={trigger}>
+          {!isMutating ? "Upload Photo" : "Loading..."}
         </button>
       </div>
     </AuthPage>

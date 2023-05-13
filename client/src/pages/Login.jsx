@@ -5,6 +5,7 @@ import useSWRMutation from "swr/mutation";
 import api from "../api";
 import AuthPage from "../components/Layouts/AuthPage";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const formStyles = {
   inputElement:
     "bg-transparent border-2 border-night outline-none px-3 py-4 text-sm mb-4",
@@ -13,12 +14,14 @@ export const formStyles = {
 };
 
 const Login = () => {
+  // eslint-disable-next-line no-unused-vars
   const { trigger, error, isMutating } = useSWRMutation(
     "/auth/login",
     async (url) => {
       const { data } = await api.post(url, values);
       if (data.status) {
         localStorage.setItem("token", data.token);
+
         navigate("/");
       } else {
         throw new Error(data.message);

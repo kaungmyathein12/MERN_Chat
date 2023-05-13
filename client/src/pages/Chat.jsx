@@ -7,7 +7,6 @@ import ChatContainer from "../components/ChatContainer";
 import { useRecoilState } from "recoil";
 import { tokenAtom, userAtom } from "./../states";
 import api from "../api";
-import { X } from "@phosphor-icons/react";
 
 const Chat = () => {
   const navigate = useNavigate();
@@ -66,14 +65,14 @@ const Chat = () => {
             {currentChat && (
               <ChatContainer currentChat={currentChat} user={user} />
             )}
-            <div className="w-[320px] px-5 py-5">
-              <div className="mb-5 flex justify-end">
+            <div className="w-[320px] px-5 py-5 mr-0 ml-auto border-l border-night">
+              {/* <div className="mb-5 flex justify-end">
                 <X size={26} />
-              </div>
+              </div> */}
               <div className="h-[260px]">
                 {user.image && (
                   <img
-                    src="https://i.pinimg.com/originals/2c/9c/20/2c9c20954029da1dec1020493d9b1347.jpg"
+                    src={user.image}
                     className="w-full h-full object-cover"
                   />
                 )}

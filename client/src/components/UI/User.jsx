@@ -1,5 +1,3 @@
-import Avatar from "boring-avatars";
-
 const User = ({ user, currentSelected, changeCurrentChat }) => {
   return (
     <>
@@ -10,11 +8,11 @@ const User = ({ user, currentSelected, changeCurrentChat }) => {
           }`}
           onClick={() => changeCurrentChat(user._id, user)}
         >
-          <div>
-            <Avatar
-              size={36}
-              name={user.username}
-              colors={["#5E412F", "#FCEBB6", "#78C0A8", "#F07818", "#F0A830"]}
+          <div className="w-11 h-11 rounded overflow-hidden">
+            <img
+              src={user.image}
+              alt=""
+              className="w-full h-full object-cover"
             />
           </div>
           <div>

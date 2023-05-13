@@ -79,6 +79,7 @@ export const getAllUsers = async (req, res) => {
       "_id",
       "username",
       "email",
+      "image",
     ]);
     return res.json({
       status: true,
@@ -95,14 +96,7 @@ export const getCurrentUser = async (req, res) => {
   try {
     const { _id: id } = req.user;
     let user = await User.findById(id);
-    user = _.pick(user, [
-      "_id",
-      "username",
-      "email",
-      "friendList",
-      "requestFriendList",
-      "image",
-    ]);
+
     res.status(200).json({
       status: true,
       user,

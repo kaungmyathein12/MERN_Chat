@@ -3,7 +3,7 @@ import AvatarImage from "./AvatarImage";
 const Navbar = ({ currentUser }) => {
   const navigate = useNavigate();
   const logout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     navigate("/login");
   };
   return (
