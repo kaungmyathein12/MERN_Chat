@@ -5,10 +5,11 @@ import Navbar from "../components/Navbar";
 import SideBar from "../components/SideBar";
 import ChatContainer from "../components/ChatContainer";
 import { useRecoilState } from "recoil";
-import { tokenAtom, userAtom } from "./../states";
+import { tokenAtom, userAtom } from "../states";
 import api from "../api";
+import AllUser from "./AllUser";
 
-const Chat = () => {
+const Home = () => {
   const navigate = useNavigate();
   const [token, setToken] = useRecoilState(tokenAtom);
   const [user, setUser] = useRecoilState(userAtom);
@@ -51,7 +52,6 @@ const Chat = () => {
       trigger();
     }
   }, [token, trigger]);
-
   return (
     <>
       {user !== undefined && (
@@ -66,28 +66,31 @@ const Chat = () => {
                 setCurrentSelected={setCurrentSelected}
               />
             )}
-            {currentSelected !== "Home" &&
-              currentSelected !== "See all users" &&
-              currentChat && (
+            {currentChat && (
+              <Page currentSelected={currentSelected}>
                 <ChatContainer currentChat={currentChat} user={user} />
-              )}
-            <div className="w-[320px] px-5 py-5 mr-0 ml-auto border-l border-night">
-              <div className="h-[260px]">
-                {user.image && (
-                  <img
-                    src={user.image}
-                    className="w-full h-full object-cover"
-                  />
-                )}
+              </Page>
+            )}
+            {currentSelected === "See all users" && <AllUser />}
+            <Page currentSelected={currentSelected}>
+              <div className="w-[320px] px-5 py-5 mr-0 ml-auto border-l border-night">
+                <div className="h-[260px]">
+                  {user.image && (
+                    <img
+                      src={user.image}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+                <div className="my-3">
+                  <h2 className="text-xl font-semibold">{user.username}</h2>
+                  <span className="text-sm opacity-50">{user.email}</span>
+                </div>
+                <button className="text-center bg-white text-black w-full py-2 text-sm mt-1 rounded font-semibold">
+                  Edit Profile
+                </button>
               </div>
-              <div className="my-3">
-                <h2 className="text-xl font-semibold">{user.username}</h2>
-                <span className="text-sm opacity-50">{user.email}</span>
-              </div>
-              <button className="text-center bg-white text-black w-full py-2 text-sm mt-1 rounded font-semibold">
-                Edit Profile
-              </button>
-            </div>
+            </Page>
           </div>
         </div>
       )}
@@ -95,4 +98,14 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default Home;
+
+export const Page = ({ children, currentSelected }) => {
+  return (
+    <>
+      {currentSelected &&
+        currentSelected !== "Home" &&
+        currentSelected !== "See all users" && <>{children}</>}
+    </>
+  );
+};
