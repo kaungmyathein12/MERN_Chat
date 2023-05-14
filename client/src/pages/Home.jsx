@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import { tokenAtom, userAtom } from "../states";
 import api from "../api";
 import AllUser from "./AllUser";
+import Request from "./Request";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const Home = () => {
           Authorization: "Bearer " + token,
         },
       });
+
       if (data.status) {
         setUser(data.user);
       } else {
@@ -48,10 +50,16 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (token !== "") {
-      trigger();
+    if (localStorage.getItem("token")) {
+      if (token) {
+        trigger();
+      } else {
+        navigate("/login");
+      }
+    } else {
+      navigate("/login");
     }
-  }, [token, trigger]);
+  }, []);
   return (
     <>
       {user !== undefined && (
@@ -71,6 +79,7 @@ const Home = () => {
                 <ChatContainer currentChat={currentChat} user={user} />
               </Page>
             )}
+            {currentSelected === "Request List" && <Request />}
             {currentSelected === "See all users" && <AllUser />}
             <Page currentSelected={currentSelected}>
               <div className="w-[320px] px-5 py-5 mr-0 ml-auto border-l border-night">
@@ -104,7 +113,7 @@ export const Page = ({ children, currentSelected }) => {
   return (
     <>
       {currentSelected &&
-        currentSelected !== "Home" &&
+        currentSelected !== "Request List" &&
         currentSelected !== "See all users" && <>{children}</>}
     </>
   );

@@ -4,6 +4,7 @@ import {
   getCurrentUser,
   login,
   register,
+  sentFriendRequest,
   updateProfile,
 } from "../controller/userController.js";
 import { vertifyToken } from "../utils/token.js";
@@ -14,5 +15,6 @@ router.post("/login", login);
 router.get("/me", vertifyToken, getCurrentUser);
 router.post("/profile", vertifyToken, updateProfile);
 router.get("/allusers/:id", getAllUsers);
+router.post("/user/sendrequest", vertifyToken, sentFriendRequest);
 
 export default router;

@@ -75,16 +75,19 @@ export const login = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({ _id: { $ne: req.params.id } }).select([
-      "_id",
-      "username",
-      "email",
-      "image",
-    ]);
-    return res.json({
-      status: true,
-      users: users,
-    });
+    const user = await User.findById(req.params.id);
+    if (user) {
+      const users = await User.find({ _id: { $ne: req.params.id } }).select([
+        "_id",
+        "username",
+        "email",
+        "image",
+      ]);
+      return res.json({
+        status: true,
+        users: users,
+      });
+    }
   } catch (error) {
     return res.json({
       error: error.message,
@@ -107,6 +110,39 @@ export const getCurrentUser = async (req, res) => {
       error: error.message,
     });
   }
+};
+
+export const sentFriendRequest = async (req, res) => {
+  const { _id: id } = req.user;
+  const { sender, receiverId } = req.body;
+  let user = await User.findById(receiverId);
+  if (!user)
+    return res.status(404).json({ status: false, message: "User not found" });
+
+  user = await User.findByIdAndUpdate(receiverId, {
+    requestFriendList: [
+      ...user.requestFriendList,
+      {
+        id,
+        username: sender.username,
+        email: sender.email,
+        image: sender.image,
+      },
+    ],
+  });
+  user = _.pick(user, [
+    "_id",
+    "username",
+    "email",
+    "friendList",
+    "requestFriendList",
+    "image",
+  ]);
+
+  res.status(200).json({
+    status: true,
+    user,
+  });
 };
 
 export const updateProfile = async (req, res) => {

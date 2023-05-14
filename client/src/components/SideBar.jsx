@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { AnimatePresence, motion } from "framer-motion";
-import { CaretDown, CaretRight, Hash, Buildings } from "@phosphor-icons/react";
+import {
+  CaretDown,
+  CaretRight,
+  BellRinging,
+  Buildings,
+} from "@phosphor-icons/react";
 import api from "../api/index";
 import Skeleton from "./UI/Skeleton";
 import User from "./UI/User";
 
 const sideBarData = [
   {
-    title: "Home",
-    path: "/home",
-    icon: <Hash weight="bold" />,
-  },
-  {
     title: "See all users",
     path: "/allusers",
     icon: <Buildings weight="bold" />,
+  },
+  {
+    title: "Request List",
+    path: "/home",
+    icon: <BellRinging weight="bold" />,
   },
   { title: "Direct Messages", path: "/" },
 ];
@@ -43,7 +48,7 @@ const SideBar = ({
   }, [currentUserId, mutate]);
 
   return (
-    <div className="py-4 border-r border-night w-[280px] flex flex-col">
+    <div className="py-4 border-r border-night w-[280px] flex flex-col flex-shrink-0">
       {sideBarData &&
         sideBarData.length > 0 &&
         sideBarData.map((item) => {
