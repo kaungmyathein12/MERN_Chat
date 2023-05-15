@@ -1,14 +1,8 @@
-import useSWR from "swr";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../states";
 
-import api from "../api";
 const Request = () => {
-  const user = useRecoilValue(userAtom);
-  const { data } = useSWR("contacts", async () => {
-    const { data } = await api.get(`/auth/allusers/${user._id}`);
-    return data;
-  });
+  const { requestFriendList } = useRecoilValue(userAtom);
 
   return (
     <div className="flex-grow p-5 bg-[#010101]">
@@ -19,9 +13,9 @@ const Request = () => {
         className="w-1/3 outline-none bg-[#101010] my-4 p-3 rounded-md text-sm"
       />
       <div className="w-full grid grid-cols-3 mt-4 gap-5">
-        {data &&
-          data.users.length > 0 &&
-          data.users.map((user) => (
+        {requestFriendList &&
+          requestFriendList.length > 0 &&
+          requestFriendList.map((user) => (
             <div
               key={user._id}
               className="border border-night bg-[#101010] rounded-md overflow-hidden flex flex-row"
