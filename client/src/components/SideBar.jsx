@@ -48,7 +48,7 @@ const SideBar = ({
   }, [currentUserId, mutate]);
 
   return (
-    <div className="py-4 border-r border-night w-[280px] flex flex-col flex-shrink-0">
+    <>
       {sideBarData &&
         sideBarData.length > 0 &&
         sideBarData.map((item) => {
@@ -56,7 +56,7 @@ const SideBar = ({
             return (
               <div key={item.title} className="flex flex-col">
                 <div
-                  className="flex flex-row justify-start items-center gap-x-2 px-5 py-3 opacity-80 cursor-pointer select-none"
+                  className="flex cursor-pointer select-none flex-row items-center justify-start gap-x-2 px-5 py-3 opacity-80"
                   onClick={() => {
                     setOpenDropdown(!openDropdown);
                   }}
@@ -107,7 +107,7 @@ const SideBar = ({
             <div
               key={item.title}
               onClick={() => setCurrentSelected(item.title)}
-              className={`bg-[#101010] z-50 text-sm font-medium flex flex-row justify-start items-center gap-x-2 ml-[14px] mr-[16px] px-[10px] py-[12px] rounded-md opacity-80
+              className={`z-50 ml-[14px] mr-[16px] flex flex-row items-center justify-start gap-x-2 rounded-md bg-[#101010] px-[10px] py-[12px] text-sm font-medium opacity-80
         ${currentSelected === item.title && "bg-[#222]"} cursor-pointer`}
             >
               {item.icon}
@@ -115,7 +115,7 @@ const SideBar = ({
             </div>
           );
         })}
-    </div>
+    </>
   );
 };
 

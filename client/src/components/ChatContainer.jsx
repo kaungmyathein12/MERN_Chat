@@ -97,7 +97,7 @@ const ChatContainer = ({ currentChat }) => {
   }, [currentChat, getAllMessages]);
 
   return (
-    <div className="flex-grow relative flex flex-col">
+    <>
       <ChatHeader currentChat={currentChat} />
       <ChatBody
         currentChat={currentChat}
@@ -105,7 +105,7 @@ const ChatContainer = ({ currentChat }) => {
         newMessage={newMessage}
       />
       <ChatInput message={message} setMessage={setMessage} trigger={trigger} />
-    </div>
+    </>
   );
 };
 
